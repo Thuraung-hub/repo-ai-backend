@@ -97,15 +97,15 @@ public class AuthController {
         String avatarUrl = (String) attributes.get("avatar_url");
         String profileUrl = (String) attributes.get("html_url");
 
-        User user = userRepository.findByGithubId(githubId).orElseGet(() -> {
-            User newUser = new User();
-            newUser.setGithubId(githubId);
-            newUser.setUsername(username);
-            newUser.setEmail(email);
-            newUser.setAvatarUrl(avatarUrl);
-            newUser.setProfileUrl(profileUrl);
-            return userRepository.save(newUser);
-        });
+        // User user = userRepository.findByGithubId(githubId).orElseGet(() -> {
+        //     User newUser = new User();
+        //     newUser.setGithubId(githubId);
+        //     newUser.setUsername(username);
+        //     newUser.setEmail(email);
+        //     newUser.setAvatarUrl(avatarUrl);
+        //     newUser.setProfileUrl(profileUrl);
+        //     return userRepository.save(newUser);
+        // });
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
