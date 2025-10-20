@@ -7,36 +7,39 @@ import jakarta.persistence.Id;
 
 @Entity
 public class User {
-    @Id  // <-- YOU NEED THIS!!!
+    @Id // <-- YOU NEED THIS!!!
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
+    private String githubId;
+    private String username;
     private String email;
-    private String password;
+    private String avatarUrl;
+    private String profileUrl;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(Long id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
+    public User(String githubId, String username, String email, String avatarUrl, String profileUrl) {
+        this.githubId = githubId;
+        this.username = username;
         this.email = email;
-        this.password = password;
+        this.avatarUrl = avatarUrl;
+        this.profileUrl = profileUrl;
     }
 
-    public Long getId() {
-        return id;
+    public String getGithubId() {
+        return githubId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -47,11 +50,19 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 }
