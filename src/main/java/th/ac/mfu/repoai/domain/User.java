@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 public class User {
     @Id // <-- YOU NEED THIS!!!
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String githubId;
     private String username;
     private String email;
