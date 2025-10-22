@@ -45,16 +45,14 @@ public class AuthController {
 
     @GetMapping("/login")
     public ResponseEntity<User> login(Authentication principal) {
-        // Load the token for this user
-        gitServices.loadGitHubToken(principal);
-
         // Get user info from GitHub (includes email handling)
+        gitServices.loadGitHubToken(principal);
         ResponseEntity<Map<String, Object>> userInfoResponse = gitServices.getUserInfo();
-
+      
         if (!userInfoResponse.getStatusCode().is2xxSuccessful() || userInfoResponse.getBody() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
+     
         Map<String, Object> attributes = userInfoResponse.getBody();
 
         String githubId = String.valueOf(attributes.get("id"));
