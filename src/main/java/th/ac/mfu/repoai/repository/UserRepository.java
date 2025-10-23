@@ -9,5 +9,5 @@ import th.ac.mfu.repoai.domain.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findAll();
-    Optional<User> findByGithubId(String githubId);
+    Optional<User> findByGithubId(Long githubId);
 }

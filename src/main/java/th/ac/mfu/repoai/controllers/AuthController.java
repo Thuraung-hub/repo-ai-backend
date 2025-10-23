@@ -55,7 +55,7 @@ public class AuthController {
      
         Map<String, Object> attributes = userInfoResponse.getBody();
 
-        String githubId = String.valueOf(attributes.get("id"));
+        Long githubId = ((Number) attributes.get("id")).longValue();
         String username = (String) attributes.get("login");
         String email = (String) attributes.get("email");
         String avatarUrl = (String) attributes.get("avatar_url");

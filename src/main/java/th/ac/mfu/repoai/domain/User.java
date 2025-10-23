@@ -10,7 +10,7 @@ public class User {
     @Id // <-- YOU NEED THIS!!!
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String githubId;
+    private Long githubId;
     private String username;
     private String email;
     private String avatarUrl;
@@ -19,7 +19,7 @@ public class User {
     public User() {
     }
 
-    public User(String githubId, String username, String email, String avatarUrl, String profileUrl) {
+    public User(Long githubId, String username, String email, String avatarUrl, String profileUrl) {
         this.githubId = githubId;
         this.username = username;
         this.email = email;
@@ -27,11 +27,11 @@ public class User {
         this.profileUrl = profileUrl;
     }
 
-    public String getGithubId() {
+    public Long getGithubId() {
         return githubId;
     }
 
-    public void setGithubId(String githubId) {
+    public void setGithubId(Long githubId) {
         this.githubId = githubId;
     }
 

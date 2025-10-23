@@ -122,8 +122,7 @@ public class GitServices {
     }
 
     public ResponseEntity<List<Map<String, Object>>> getUserRepositories() {
-        ResponseEntity<String> response = callGitHubApi("https://api.github.com/user/repos");
-        System.out.println("GitHub Repos Response: " + response.getBody());
+        ResponseEntity<String> response = callGitHubApi("https://api.github.com/user/repos");                                                       
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             return ResponseEntity.status(response.getStatusCode())
