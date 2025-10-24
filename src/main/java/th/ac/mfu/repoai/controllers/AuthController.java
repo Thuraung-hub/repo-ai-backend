@@ -39,14 +39,26 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Not authenticated");
         }
-
-        return ResponseEntity.ok(response.getBody().getTokenValue());
+        OAuth2AccessToken token = response.getBody();
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
+        }
+        return ResponseEntity.ok(token.getTokenValue());
     }
 
     @GetMapping("/login")
     public ResponseEntity<User> login(Authentication principal) {
+        if (principal == null) {
+            // If not authenticated yet, start the OAuth2 flow
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .header("Location", "/oauth2/authorization/github")
+                    .build();
+        }
         // Get user info from GitHub (includes email handling)
-        gitServices.loadGitHubToken(principal);
+        ResponseEntity<OAuth2AccessToken> tokenResp = gitServices.loadGitHubToken(principal);
+        if (!tokenResp.getStatusCode().is2xxSuccessful() || tokenResp.getBody() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         ResponseEntity<Map<String, Object>> userInfoResponse = gitServices.getUserInfo();
       
         if (!userInfoResponse.getStatusCode().is2xxSuccessful() || userInfoResponse.getBody() == null) {
@@ -54,6 +66,9 @@ public class AuthController {
         }
      
         Map<String, Object> attributes = userInfoResponse.getBody();
+        if (attributes == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         Long githubId = ((Number) attributes.get("id")).longValue();
         String username = (String) attributes.get("login");
@@ -72,6 +87,23 @@ public class AuthController {
         });
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    // Explicit endpoint to initiate OAuth2 login from frontends
+    @GetMapping("/authorize")
+    public ResponseEntity<Void> authorize() {
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", "/oauth2/authorization/github")
+                .build();
+    }
+
+    // Lightweight status endpoint for SPAs to check auth state
+    @GetMapping("/status")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> status(Authentication principal) {
+        boolean authenticated = principal != null;
+        return ResponseEntity.ok(Map.of(
+                "authenticated", authenticated));
     }
 
     @PostMapping("/logout")

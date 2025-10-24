@@ -45,9 +45,13 @@ public class GitServices {
      */
     public ResponseEntity<OAuth2AccessToken> loadGitHubToken(Authentication principal) {
         String clientRegistrationId = "github";
+    if (principal == null) {
+        // No authenticated principal in the context
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
-        OAuth2AuthorizedClient client = authorizedClientService
-                .loadAuthorizedClient(clientRegistrationId, principal.getName());
+    OAuth2AuthorizedClient client = authorizedClientService
+        .loadAuthorizedClient(clientRegistrationId, principal.getName());
 
         if (client == null || client.getAccessToken() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
