@@ -16,7 +16,7 @@ public class GitController {
         this.gitServices = gitServices;
     }
 
-    @GetMapping("/repos")
+    @GetMapping("/sync_repos")
     public ResponseEntity<?> getUserRepos() {
         return gitServices.getUserRepositories();
     }
